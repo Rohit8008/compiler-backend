@@ -14,7 +14,10 @@ connectDB();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({credentials:true}))
+app.use(cors({
+  origin: 'http://localhost:5173', // Your frontend URL
+  credentials: true
+}));
 
 
 app.get("/hcheck",(req,res)=>{

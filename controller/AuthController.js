@@ -213,8 +213,8 @@ export const sendResetOtp = async (req, res) => {
 };
 
 export const resetPassword = async (req, res) => {
-  const { email, otp, password } = req.body;
-  if (!email || !otp || !password) {
+  const { email, otp, newPassword } = req.body;
+  if (!email || !otp || !newPassword) {
     return res.json({ success: false, message: "all details are required" });
   }
 
@@ -233,7 +233,7 @@ export const resetPassword = async (req, res) => {
       return res.json({ success: false, message: "Otp is expired." });
     }
 
-    const hashPass = await bcrypt.hash(password, 10);
+    const hashPass = await bcrypt.hash(newPassword, 10);
     user.password = hashPass;
     user.resetOtp = "";
     user.resetOtpExpiresAt = 0;
