@@ -45,7 +45,15 @@ export const register = async (req, res) => {
 
     await transport.sendMail(mailOptions);
 
-    return res.json({ success: true });
+    // Return user data without sensitive information
+    const userData = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt
+    };
+
+    return res.json({ success: true, user: userData });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -81,7 +89,15 @@ export const login = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    return res.json({ success: true });
+    // Return user data without sensitive information
+    const userData = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt
+    };
+
+    return res.json({ success: true, user: userData });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -169,7 +185,17 @@ export const verifyEmail = async (req, res) => {
 //check if user is authenticated
 export const isAuthenticated = async (req, res) => {
   try {
-    return res.json({ success: true });
+    // Get user ID from the token
+    const userId = req.user.id;
+    
+    // Find the user by ID, excluding sensitive information
+    const user = await User.findById(userId).select('-password -resetOtp -resetOtpExpiresAt -verifyOtp -verifyOtpExpireAt');
+    
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+    
+    return res.json({ success: true, user });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
