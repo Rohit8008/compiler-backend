@@ -50,7 +50,8 @@ export const register = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      createdAt: user.createdAt
+      createdAt: user.createdAt,
+      isAccountVerified:user.isAccountVerified
     };
 
     return res.json({ success: true, user: userData });
@@ -94,7 +95,8 @@ export const login = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      createdAt: user.createdAt
+      createdAt: user.createdAt,
+      isAccountVerified:user.isAccountVerified
     };
 
     return res.json({ success: true, user: userData });
